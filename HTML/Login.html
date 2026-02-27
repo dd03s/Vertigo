@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VÉRTIGO - Acceso</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <!-- Anime.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+    
+    body {
+      background: #ffffff;
+      font-family: 'Inter', sans-serif;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Fondo sutil */
+    .bg-pattern {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: radial-gradient(#8b0000 0.5px, transparent 0.5px);
+      background-size: 30px 30px;
+      opacity: 0.05;
+      z-index: 0;
+    }
+
+    /* Caja de login minimalista */
+    .login-box {
+      background: #ffffff;
+      border: 2px solid #000000;
+      padding: 40px;
+      width: 400px;
+      position: relative;
+      z-index: 10;
+      box-shadow: 8px 8px 0px rgba(139, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .login-box:hover {
+      box-shadow: 12px 12px 0px rgba(139, 0, 0, 0.3);
+    }
+
+    /* Título principal */
+    .vertigo-title {
+      font-size: 3rem;
+      font-weight: 800;
+      color: #000000;
+      letter-spacing: -1px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .vertigo-title span {
+      color: #8b0000;
+      font-weight: 900;
+    }
+
+    /* Subtítulo */
+    .subtitle {
+      font-size: 0.9rem;
+      color: #666666;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      position: relative;
+      display: inline-block;
+    }
+
+    .subtitle::before {
+      content: '';
+      width: 20px;
+      height: 2px;
+      background: #8b0000;
+      position: absolute;
+      left: -30px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .subtitle::after {
+      content: '';
+      width: 20px;
+      height: 2px;
+      background: #8b0000;
+      position: absolute;
+      right: -30px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    /* Inputs estilo limpio */
+    .input-vertigo {
+      background: #ffffff !important;
+      border: 2px solid #000000 !important;
+      color: #000000 !important;
+      padding: 12px 15px !important;
+      font-size: 1rem !important;
+      transition: all 0.2s ease !important;
+      border-radius: 0 !important;
+    }
+
+    .input-vertigo:focus {
+      border-color: #8b0000 !important;
+      outline: none !important;
+    }
+
+    .input-vertigo::placeholder {
+      color: #999999;
+      font-weight: 300;
+    }
+
+    /* Iconos dentro de inputs */
+    .input-icon {
+      position: relative;
+    }
+
+    .input-icon i {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #8b0000;
+      z-index: 10;
+      font-size: 1rem;
+      opacity: 0.5;
+    }
+
+    /* Botón de login */
+    .btn-vertigo {
+      background: #000000;
+      color: #ffffff;
+      border: 2px solid #000000;
+      padding: 14px;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      width: 100%;
+    }
+
+    .btn-vertigo:hover {
+      background: #8b0000;
+      border-color: #8b0000;
+    }
+
+    .btn-vertigo i {
+      margin-right: 8px;
+    }
+
+    /* Links */
+    .register-link {
+      color: #666666;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .register-link:hover {
+      color: #8b0000;
+    }
+
+    /* Línea divisoria */
+    .divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      color: #cccccc;
+      font-size: 0.8rem;
+      margin: 20px 0;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid #eeeeee;
+    }
+
+    .divider span {
+      margin: 0 10px;
+    }
+
+    /* Elementos decorativos sutiles */
+    .decor-line {
+      position: absolute;
+      background: #8b0000;
+      opacity: 0.1;
+      z-index: 1;
+    }
+
+    .decor-line-1 {
+      top: 10%;
+      left: 5%;
+      width: 100px;
+      height: 2px;
+      transform: rotate(45deg);
+    }
+
+    .decor-line-2 {
+      bottom: 15%;
+      right: 8%;
+      width: 150px;
+      height: 2px;
+      transform: rotate(-30deg);
+    }
+
+    .decor-dot {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: #8b0000;
+      opacity: 0.2;
+      border-radius: 0;
+      transform: rotate(45deg);
+    }
+  </style>
+</head>
+
+<body class="flex items-center justify-center min-h-screen relative">
+
+  <!-- Fondo sutil -->
+  <div class="bg-pattern"></div>
+
+  <!-- Elementos decorativos sutiles -->
+  <div class="decor-line decor-line-1"></div>
+  <div class="decor-line decor-line-2"></div>
+  
+  <div class="decor-dot" style="top: 20%; right: 15%;"></div>
+  <div class="decor-dot" style="bottom: 25%; left: 12%;"></div>
+  <div class="decor-dot" style="top: 40%; left: 20%;"></div>
+  <div class="decor-dot" style="bottom: 30%; right: 25%;"></div>
+  <div class="login-box" id="loginBox">
+    
+
+    <div class="text-center mb-2">
+      <h1 class="vertigo-title" id="title">
+        VERT<span>IGO</span>
+      </h1>
+    </div>
+    
+    <!-- Subtítulo -->
+    <div class="text-center mb-8">
+      <p class="subtitle" id="subtitle">
+        ACCESO
+      </p>
+    </div>
+
+    <!-- Campo usuario -->
+    <div class="input-icon mb-4">
+      <input type="text" class="input-vertigo w-full" placeholder="usuario" id="user">
+      <i class="fas fa-user"></i>
+    </div>
+
+    <!-- Campo contraseña -->
+    <div class="input-icon mb-6">
+      <input type="password" class="input-vertigo w-full" placeholder="contraseña" id="pass">
+      <i class="fas fa-lock"></i>
+    </div>
+
+    <!-- Botón de login -->
+    <button class="btn-vertigo mb-4" id="btnLogin">
+      <i class="fas fa-arrow-right"></i> INGRESAR
+    </button>
+
+    <!-- Divisor -->
+    <div class="divider">
+      <span>O</span>
+    </div>
+
+    <!-- Links adicionales -->
+    <div class="flex justify-between">
+      <a href="#" class="register-link">¿OLVIDASTE TU CONTRASEÑA?</a>
+      <a href="#" class="register-link">REGISTRARSE</a>
+    </div>
+  </div>
+
+  <script>
+    // Animaciones sutiles con Anime.js
+
+    // Animación principal de entrada
+    anime({
+      targets: '#loginBox',
+      opacity: [0, 1],
+      translateY: [30, 0],
+      duration: 800,
+      easing: 'easeOutQuad'
+    });
+
+    // Animación del título
+    anime({
+      targets: '#title',
+      opacity: [0, 1],
+      translateY: [-20, 0],
+      duration: 600,
+      delay: 200,
+      easing: 'easeOutQuad'
+    });
+
+    // Animación del subtítulo
+    anime({
+      targets: '#subtitle',
+      opacity: [0, 1],
+      scale: [0.9, 1],
+      duration: 500,
+      delay: 400,
+      easing: 'easeOutQuad'
+    });
+
+    // Animación de los inputs
+    anime({
+      targets: '.input-vertigo',
+      opacity: [0, 1],
+      translateX: [-10, 0],
+      delay: anime.stagger(100, {start: 600}),
+      duration: 500,
+      easing: 'easeOutQuad'
+    });
+
+    // Animación de los iconos
+    anime({
+      targets: '.input-icon i',
+      opacity: [0, 0.5],
+      scale: [0.8, 1],
+      delay: anime.stagger(100, {start: 700}),
+      duration: 400,
+      easing: 'easeOutQuad'
+    });
+
+    // Animación del botón
+    anime({
+      targets: '#btnLogin',
+      opacity: [0, 1],
+      scale: [0.95, 1],
+      delay: 900,
+      duration: 500,
+      easing: 'easeOutQuad'
+    });
+
+    // Animación de los links
+    anime({
+      targets: '.register-link',
+      opacity: [0, 1],
+      translateY: [10, 0],
+      delay: anime.stagger(100, {start: 1100}),
+      duration: 400,
+      easing: 'easeOutQuad'
+    });
+
+    // Animación del divisor
+    anime({
+      targets: '.divider',
+      opacity: [0, 1],
+      delay: 1000,
+      duration: 400,
+      easing: 'easeOutQuad'
+    });
+
+    // Manejo del login
+    document.getElementById("btnLogin").addEventListener("click", function(e) {
+      e.preventDefault();
+      
+      // Animación de salida limpia
+      anime({
+        targets: '#loginBox',
+        opacity: 0,
+        translateY: -30,
+        duration: 400,
+        easing: 'easeInQuad',
+        complete: function() {
+          window.location.href = "Index.html"; // Ajusta la ruta según necesites
+        }
+      });
+
+      // Pequeño feedback en el botón
+      anime({
+        targets: '#btnLogin',
+        backgroundColor: ['#000000', '#8b0000', '#000000'],
+        duration: 600,
+        easing: 'linear'
+      });
+    });
+
+    // Efecto sutil en inputs
+    document.querySelectorAll('.input-vertigo').forEach(input => {
+      input.addEventListener('focus', () => {
+        anime({
+          targets: input,
+          borderColor: '#8b0000',
+          duration: 200,
+          easing: 'linear'
+        });
+      });
+
+      input.addEventListener('blur', () => {
+        anime({
+          targets: input,
+          borderColor: '#000000',
+          duration: 200,
+          easing: 'linear'
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>

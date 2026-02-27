@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VÉRTIGO - Official Website</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #ffffff;
+      color: #000000;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Tipografía elegante */
+    h1, h2, h3, .nav-link, .menu-link {
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .display-large {
+      font-size: clamp(3rem, 10vw, 8rem);
+      font-weight: 700;
+      line-height: 0.9;
+      letter-spacing: -0.03em;
+    }
+
+    .display-medium {
+      font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: 600;
+      line-height: 1.1;
+    }
+
+    /* Navbar */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 1.5rem 2rem;
+      mix-blend-mode: difference;
+      color: #ffffff;
+    }
+
+    .navbar.scrolled {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      color: #000000;
+      padding: 1rem 2rem;
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-link {
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: opacity 0.3s ease;
+    }
+
+    .nav-link:hover {
+      opacity: 0.6;
+    }
+
+    /* Cover carousel */
+    .cover-carousel {
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cover-slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .cover-slide.active {
+      opacity: 1;
+    }
+
+    .cover-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .cover-content {
+      position: absolute;
+      bottom: 15%;
+      left: 10%;
+      color: white;
+      max-width: 600px;
+      z-index: 10;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .cover-pretitle {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      margin-bottom: 1rem;
+      opacity: 0.8;
+    }
+
+    .cover-title {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 1.5rem;
+    }
+
+    .cover-cta {
+      display: inline-block;
+      padding: 1rem 2.5rem;
+      border: 1px solid white;
+      color: white;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+    }
+
+    .cover-cta:hover {
+      background: white;
+      color: black;
+    }
+
+    .cover-indicators {
+      position: absolute;
+      bottom: 10%;
+      right: 10%;
+      display: flex;
+      gap: 1rem;
+      z-index: 10;
+    }
+
+    .cover-indicator {
+      width: 60px;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .cover-indicator.active {
+      background: white;
+      width: 100px;
+    }
+
+    /* Secciones editoriales */
+    .section-title {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      margin-bottom: 2rem;
+      color: #8b0000;
+    }
+
+    .split-banner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      background: #000000;
+      margin: 2rem 0;
+    }
+
+    .split-item {
+      position: relative;
+      height: 70vh;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .split-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .split-item:hover .split-image {
+      transform: scale(1.05);
+    }
+
+    .split-content {
+      position: absolute;
+      bottom: 2rem;
+      left: 2rem;
+      color: white;
+      z-index: 10;
+      max-width: 80%;
+    }
+
+    .split-pretitle {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      margin-bottom: 0.5rem;
+      opacity: 0.8;
+    }
+
+    .split-title {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .split-cta {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: white;
+      text-decoration: none;
+      border-bottom: 1px solid white;
+      padding-bottom: 0.25rem;
+    }
+
+    /* Product grid */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      background: #000000;
+      margin: 4rem 0;
+    }
+
+    .product-item {
+      background: white;
+      padding: 2rem;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .product-item:hover {
+      background: #f8f8f8;
+    }
+
+    .product-image {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      margin-bottom: 1.5rem;
+    }
+
+    .product-category {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      color: #8b0000;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+    }
+
+    .product-name {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .product-price {
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+
+    /* Carrusel editorial */
+    .editorial-carousel {
+      margin: 4rem 0;
+      overflow: hidden;
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+
+    .carousel-item {
+      flex: 0 0 33.333%;
+      padding: 0 1rem;
+    }
+
+    .carousel-image {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      margin-bottom: 1rem;
+    }
+
+    .carousel-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .carousel-text {
+      color: #666;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .carousel-link {
+      color: #8b0000;
+      text-decoration: none;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* Footer */
+    .footer {
+      border-top: 1px solid #000000;
+      padding: 4rem 2rem 2rem;
+      margin-top: 4rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr repeat(4, 1fr);
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+
+    .footer-logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .footer-logo span {
+      color: #8b0000;
+    }
+
+    .footer-description {
+      color: #666;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .footer-column-title {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-links {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-links li {
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-links a {
+      color: #666;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: #8b0000;
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 2rem;
+      border-top: 1px solid #eee;
+      color: #999;
+      font-size: 0.8rem;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .social-links a {
+      color: #666;
+      transition: color 0.3s ease;
+    }
+
+    .social-links a:hover {
+      color: #8b0000;
+    }
+
+    /* Quick menu */
+    .quick-menu {
+      position: fixed;
+      right: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 90;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .quick-dot {
+      width: 8px;
+      height: 8px;
+      background: #000000;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      opacity: 0.3;
+    }
+
+    .quick-dot:hover {
+      opacity: 0.8;
+    }
+
+    .quick-dot.active {
+      background: #8b0000;
+      opacity: 1;
+      transform: scale(1.5);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .carousel-item {
+        flex: 0 0 50%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .split-banner {
+        grid-template-columns: 1fr;
+      }
+      
+      .carousel-item {
+        flex: 0 0 100%;
+      }
+      
+      .navbar {
+        padding: 1rem;
+      }
+      
+      .quick-menu {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <div class="flex justify-between items-center">
+      <div class="text-xl font-bold tracking-tight">
+        VÉRT<span style="color: #8b0000;">IGO</span>
+      </div>
+      
+      <div class="hidden md:flex items-center space-x-12">
+        <a href="#" class="nav-link">Racing</a>
+        <a href="#" class="nav-link">Sports Cars</a>
+        <a href="#" class="nav-link">Colecciones</a>
+        <a href="#" class="nav-link">Experiencias</a>
+        <a href="#" class="nav-link">About Us</a>
+      </div>
+      
+      <div class="flex items-center space-x-6">
+        <i class="fas fa-search nav-link"></i>
+        <i class="fas fa-user nav-link"></i>
+        <i class="fas fa-shopping-bag nav-link"></i>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Quick Menu -->
+  <div class="quick-menu">
+    <div class="quick-dot active" data-section="cover"></div>
+    <div class="quick-dot" data-section="editorial"></div>
+    <div class="quick-dot" data-section="products"></div>
+    <div class="quick-dot" data-section="collections"></div>
+    <div class="quick-dot" data-section="magazine"></div>
+  </div>
+
+  <!-- Cover Carousel -->
+  <section class="cover-carousel" id="cover">
+    <div class="cover-slide active" data-index="0">
+      <img src="https://images.unsplash.com/photo-1547447134-cd3f5c716030?q=80&w=2070&auto=format&fit=crop" alt="Skate culture" class="cover-image">
+      <div class="cover-content">
+        <div class="cover-pretitle">Sábado, 28 de febrero - 09.30AM (CET)</div>
+        <div class="cover-title">Runway Collection Otoño/Invierno 2026-27</div>
+        <a href="#" class="cover-cta">Transmisión en directo</a>
+      </div>
+    </div>
+    
+    <div class="cover-slide" data-index="1">
+      <img src="https://images.unsplash.com/photo-1605787020600-b82eb2865a84?q=80&w=2073&auto=format&fit=crop" alt="Skateboard" class="cover-image">
+      <div class="cover-content">
+        <div class="cover-pretitle">LIVERY 2026</div>
+        <div class="cover-title">VÉRTIGO PRO SERIES</div>
+        <a href="#" class="cover-cta">Discover</a>
+      </div>
+    </div>
+    
+    <div class="cover-slide" data-index="2">
+      <img src="https://images.unsplash.com/photo-1523381294911-8d3cead13475?q=80&w=2070&auto=format&fit=crop" alt="Street fashion" class="cover-image">
+      <div class="cover-content">
+        <div class="cover-pretitle">Colecciones</div>
+        <div class="cover-title">Nuevas llegadas</div>
+        <a href="#" class="cover-cta">Descubrir</a>
+      </div>
+    </div>
+    
+    <div class="cover-indicators">
+      <div class="cover-indicator active" data-index="0"></div>
+      <div class="cover-indicator" data-index="1"></div>
+      <div class="cover-indicator" data-index="2"></div>
+    </div>
+  </section>
+
+  <!-- Editorial Carousel -->
+  <section class="editorial-carousel container mx-auto px-6" id="editorial">
+    <div class="section-title">VÉRTIGO MAGAZINE</div>
+    
+    <div class="carousel-track" id="carouselTrack">
+      <div class="carousel-item">
+        <img src="https://images.unsplash.com/photo-1556906781-9a412961c28c?q=80&w=1974&auto=format&fit=crop" alt="Skater" class="carousel-image">
+        <div class="carousel-title">Ferrari unveils 2026 livery of 499P</div>
+        <div class="carousel-text">Ferrari has officially launched the 2026 season, which will see the Prancing Horse return...</div>
+        <a href="#" class="carousel-link">Leer más →</a>
+      </div>
+      
+      <div class="carousel-item">
+        <img src="https://images.unsplash.com/photo-1570464197285-9949814674a7?q=80&w=1974&auto=format&fit=crop" alt="Street style" class="carousel-image">
+        <div class="carousel-title">Detrás de la visión</div>
+        <div class="carousel-text">Una mirada interna al proceso creativo y de producción que da forma al VÉRTIGO Luce...</div>
+        <a href="#" class="carousel-link">Leer más →</a>
+      </div>
+      
+      <div class="carousel-item">
+        <img src="https://images.unsplash.com/photo-1517433456452-f9633a875f6f?q=80&w=1931&auto=format&fit=crop" alt="Skate park" class="carousel-image">
+        <div class="carousel-title">Charles brings the test to an end</div>
+        <div class="carousel-text">Driving Scuderia Ferrari HP's SF-26 for the entire third and final day...</div>
+        <a href="#" class="carousel-link">Leer más →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Split Banner 1 -->
+  <section class="split-banner" id="collections">
+    <div class="split-item">
+      <img src="https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?q=80&w=1974&auto=format&fit=crop" alt="Collection" class="split-image">
+      <div class="split-content">
+        <div class="split-pretitle">Colecciones</div>
+        <div class="split-title">Nuevas llegadas</div>
+        <a href="#" class="split-cta">Descubrir</a>
+      </div>
+    </div>
+    
+    <div class="split-item">
+      <img src="https://images.unsplash.com/photo-1524593689594-aae2f26b75ab?q=80&w=1974&auto=format&fit=crop" alt="Museum" class="split-image">
+      <div class="split-content">
+        <div class="split-pretitle">VÉRTIGO Archives</div>
+        <div class="split-title">GREATEST HITS</div>
+        <a href="#" class="split-cta">Descubrir</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product Grid -->
+  <section class="container mx-auto px-6" id="products">
+    <div class="section-title">PRODUCTOS DESTACADOS</div>
+    
+    <div class="product-grid">
+      <div class="product-item">
+        <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=2070&auto=format&fit=crop" alt="Camiseta" class="product-image">
+        <div class="product-category">CAMISETAS</div>
+        <div class="product-name">Skater Graphic Tee</div>
+        <div class="product-price">€49.99</div>
+      </div>
+      
+      <div class="product-item">
+        <img src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=1974&auto=format&fit=crop" alt="Pantalones" class="product-image">
+        <div class="product-category">PANTALONES</div>
+        <div class="product-name">Cargo Pants</div>
+        <div class="product-price">€89.99</div>
+      </div>
+      
+      <div class="product-item">
+        <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=1935&auto=format&fit=crop" alt="Sudaderas" class="product-image">
+        <div class="product-category">SUÉTERES</div>
+        <div class="product-name">Oversize Hoodie</div>
+        <div class="product-price">€79.99</div>
+      </div>
+      
+      <div class="product-item">
+        <img src="https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?q=80&w=1974&auto=format&fit=crop" alt="Accesorios" class="product-image">
+        <div class="product-category">ACCESORIOS</div>
+        <div class="product-name">Skate Cap</div>
+        <div class="product-price">€29.99</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Split Banner 2 -->
+  <section class="split-banner">
+    <div class="split-item">
+      <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=1974&auto=format&fit=crop" alt="Magazine" class="split-image">
+      <div class="split-content">
+        <div class="split-pretitle">Magazine</div>
+        <div class="split-title">El gusto por la elegancia</div>
+        <a href="#" class="split-cta">Descubrir</a>
+      </div>
+    </div>
+    
+    <div class="split-item">
+      <img src="https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?q=80&w=1934&auto=format&fit=crop" alt="Scuderia" class="split-image">
+      <div class="split-content">
+        <div class="split-pretitle">Scuderia VÉRTIGO</div>
+        <div class="split-title">REPLICA 2026</div>
+        <a href="#" class="split-cta">Descubrir</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Split Banner 3 -->
+  <section class="split-banner">
+    <div class="split-item">
+      <img src="https://images.unsplash.com/photo-1516738901171-8eb4fc13bd20?q=80&w=2070&auto=format&fit=crop" alt="Approved" class="split-image">
+      <div class="split-content">
+        <div class="split-pretitle">VÉRTIGO Approved</div>
+        <div class="split-title">PRE-OWNED</div>
+        <a href="#" class="split-cta">Descubrir</a>
+      </div>
+    </div>
+    
+    <div class="split-item">
+      <img src="https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=2070&auto=format&fit=crop" alt="Past models" class="split-image">
+      <div class="split-content">
+        <div class="split-pretitle">Archives</div>
+        <div class="split-title">MODELOS DEL PASADO</div>
+        <a href="#" class="split-cta">Descubrir</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container mx-auto">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-logo">VÉRT<span>IGO</span></div>
+          <div class="footer-description">
+            Skate culture desde 2026. Diseño italiano con actitud urbana.
+          </div>
+        </div>
+        
+        <div>
+          <div class="footer-column-title">RACING</div>
+          <ul class="footer-links">
+            <li><a href="#">Formula 1</a></li>
+            <li><a href="#">Endurance</a></li>
+            <li><a href="#">GT</a></li>
+            <li><a href="#">Esports</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <div class="footer-column-title">SPORTS CARS</div>
+          <ul class="footer-links">
+            <li><a href="#">Todos los modelos</a></li>
+            <li><a href="#">Configurador</a></li>
+            <li><a href="#">Personalización</a></li>
+            <li><a href="#">Concesionarios</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <div class="footer-column-title">COLECCIONES</div>
+          <ul class="footer-links">
+            <li><a href="#">Hombre</a></li>
+            <li><a href="#">Mujer</a></li>
+            <li><a href="#">Accesorios</a></li>
+            <li><a href="#">Ediciones limitadas</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <div class="footer-column-title">EXPERIENCIAS</div>
+          <ul class="footer-links">
+            <li><a href="#">Eventos</a></li>
+            <li><a href="#">Skate parks</a></li>
+            <li><a href="#">Museos</a></li>
+            <li><a href="#">Test rides</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <div>© 2026 VÉRTIGO - Todos los derechos reservados</div>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-tiktok"></i></a>
+          <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Navbar scroll effect
+    const navbar = document.getElementById('navbar');
+    
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // Cover carousel
+    const slides = document.querySelectorAll('.cover-slide');
+    const indicators = document.querySelectorAll('.cover-indicator');
+    let currentSlide = 0;
+    let slideInterval;
+
+    function showSlide(index) {
+      slides.forEach(slide => slide.classList.remove('active'));
+      indicators.forEach(ind => ind.classList.remove('active'));
+      
+      slides[index].classList.add('active');
+      indicators[index].classList.add('active');
+      currentSlide = index;
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    }
+
+    // Auto advance slides
+    slideInterval = setInterval(nextSlide, 5000);
+
+    // Manual navigation
+    indicators.forEach((indicator, index) => {
+      indicator.addEventListener('click', () => {
+        clearInterval(slideInterval);
+        showSlide(index);
+        slideInterval = setInterval(nextSlide, 5000);
+      });
+    });
+
+    // Quick menu navigation
+    const quickDots = document.querySelectorAll('.quick-dot');
+    const sections = ['cover', 'editorial', 'products', 'collections', 'magazine'];
+
+    quickDots.forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        const section = document.getElementById(sections[index]);
+        if (section) {
+          section.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Update active quick dot on scroll
+    window.addEventListener('scroll', () => {
+      const scrollPosition = window.scrollY + 200;
+      
+      sections.forEach((sectionId, index) => {
+        const section = document.getElementById(sectionId);
+        if (section) {
+          const sectionTop = section.offsetTop;
+          const sectionBottom = sectionTop + section.offsetHeight;
+          
+          if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+            quickDots.forEach(dot => dot.classList.remove('active'));
+            quickDots[index].classList.add('active');
+          }
+        }
+      });
+    });
+
+    // GSAP Animations
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Fade up animations
+    gsap.utils.toArray('.split-item, .product-item, .carousel-item').forEach((element, i) => {
+      gsap.fromTo(element, 
+        { y: 50, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          scrollTrigger: {
+            trigger: element,
+            start: 'top 80%',
+            toggleActions: 'play none none reverse'
+          }
+        }
+      );
+    });
+
+    // Navbar entrance animation
+    gsap.from('.navbar', {
+      y: -100,
+      opacity: 0,
+      duration: 1,
+      ease: 'power3.out'
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VÉRTIGO - Urban Store</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios@1.6.2/dist/axios.min.js"></script>
+  <link rel="stylesheet" href="CSS/Style.css">
+
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const apiClient = axios.create({
+      baseURL: 'https://jsonplaceholder.typicode.com',
+      timeout: 5000,
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    function MenuHamburguesa({ isOpen, toggleMenu }) {
+      return (
+        <div 
+          className={`menu-hamburguesa ${isOpen ? 'active' : ''}`}
+          onClick={toggleMenu}
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      );
+    }
+
+    function MenuDesplegable({ isOpen, toggleMenu }) {
+      const menuRef = React.useRef(null);
+      const links = [
+        { nombre: 'INICIO', href: 'Index.html' },
+        { nombre: 'PRODUCTOS', href: 'HTML/Productos.html' },
+        { nombre: 'CAMISETAS', href: 'HTML/Camisetas.html' },
+        { nombre: 'PANTALONES', href: 'HTML/Pantalones.html' },
+        { nombre: 'SUÉTERES', href: 'HTML/Sueteres.html' },
+        { nombre: 'ACCESORIOS', href: 'HTML/Accesorios.html' }
+      ];
+
+      React.useEffect(() => {
+        if (isOpen) {
+          gsap.fromTo(menuRef.current.querySelectorAll('a'), 
+            { x: 50, opacity: 0 },
+            { x: 0, opacity: 1, duration: 0.4, stagger: 0.1, ease: "power2.out" }
+          );
+        }
+      }, [isOpen]);
+
+      return (
+        <div ref={menuRef} className={`menu-desplegable ${isOpen ? 'active' : ''}`}>
+          {links.map((link, index) => (
+            <a key={index} href={link.href} onClick={toggleMenu}>
+              {link.nombre}
+            </a>
+          ))}
+        </div>
+      );
+    }
+
+    function Navbar({ toggleMenu, isMenuOpen }) {
+      return (
+        <nav className="bg-white border-b-2 border-black py-4 sticky top-0 z-50">
+          <div className="container mx-auto px-4 flex justify-between items-center">
+            <a href="Index.html" className="text-3xl font-black text-black tracking-tight logo">
+              VÉRT<span className="text-red-700">IGO</span>
+            </a>
+            
+            <div className="flex items-center gap-4">
+              <div className="hidden md:block buscador-container">
+                <input 
+                  type="text" 
+                  placeholder="Buscar..." 
+                  className="buscador-input"
+                />
+                <button className="buscador-btn">
+                  <i className="fas fa-search"></i>
+                </button>
+              </div>
+              
+              <MenuHamburguesa isOpen={isMenuOpen} toggleMenu={toggleMenu} />
+            </div>
+          </div>
+        </nav>
+      );
+    }
+
+    function Hero() {
+      const heroRef = React.useRef(null);
+      const titleRef = React.useRef(null);
+      const subtitleRef = React.useRef(null);
+      const buttonsRef = React.useRef(null);
+
+      React.useEffect(() => {
+        const tl = gsap.timeline();
+        
+        tl.to(heroRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power2.out"
+        })
+        .from(titleRef.current, {
+          y: 30,
+          opacity: 0,
+          duration: 0.6,
+          ease: "power2.out"
+        }, "-=0.4")
+        .from(subtitleRef.current, {
+          y: 20,
+          opacity: 0,
+          duration: 0.5,
+          ease: "power2.out"
+        }, "-=0.3")
+        .from(buttonsRef.current, {
+          y: 20,
+          opacity: 0,
+          duration: 0.5,
+          ease: "power2.out"
+        }, "-=0.2");
+      }, []);
+
+      return (
+        <section ref={heroRef} className="hero-section text-center py-24 bg-white">
+          <div className="container mx-auto px-4">
+            <h1 ref={titleRef} className="vertigo-title mb-4">
+              VÉRT<span>IGO</span>
+            </h1>
+            <p ref={subtitleRef} className="text-xl text-gray-600 mb-8 font-light tracking-wide">
+              SKATE · STREET · CULTURE
+            </p>
+            <div ref={buttonsRef} className="flex gap-4 justify-center flex-wrap">
+              <a href="HTML/Productos.html" className="btn-primary">
+                <i className="fas fa-arrow-right mr-2"></i>
+                VER COLECCIÓN
+              </a>
+              <a href="#novedades" className="btn-secondary">
+                NOVEDADES
+              </a>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    function Categorias() {
+      const categorias = [
+        { nombre: "CAMISETAS", link: "HTML/Camisetas.html", icon: "fa-tshirt" },
+        { nombre: "PANTALONES", link: "HTML/Pantalones.html", icon: "fa-socks" },
+        { nombre: "SUÉTERES", link: "HTML/Sueteres.html", icon: "fa-vest" },
+        { nombre: "ACCESORIOS", link: "HTML/Accesorios.html", icon: "fa-hat-cowboy" }
+      ];
+
+      React.useEffect(() => {
+        gsap.fromTo('.categoria-card', 
+          { opacity: 0, y: 30 },
+          { 
+            opacity: 1, 
+            y: 0,
+            duration: 0.6,
+            stagger: 0.1,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: '.categorias-section',
+              start: 'top 80%',
+            }
+          }
+        );
+      }, []);
+
+      return (
+        <div className="categorias-section container mx-auto px-4 py-16">
+          <h2 className="text-3xl font-black text-center mb-10 tracking-tight">
+            COLECCIONES
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {categorias.map((cat, index) => (
+              <a key={index} href={cat.link} className="categoria-card">
+                <i className={`fas ${cat.icon} text-4xl mb-3 text-red-700`}></i>
+                <h3 className="text-xl font-bold tracking-tight">{cat.nombre}</h3>
+                <p className="text-sm text-gray-500 mt-2">20+ estilos</p>
+                <div className="tag mt-3">VER MÁS</div>
+              </a>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function ProductosDestacados() {
+      const [productos, setProductos] = React.useState([]);
+      const [loading, setLoading] = React.useState(true);
+
+      React.useEffect(() => {
+        const fetchProductos = async () => {
+          try {
+            const response = await apiClient.get('/photos?_limit=4');
+            setProductos(response.data);
+          } catch (error) {
+            console.error('Error cargando productos:', error);
+          } finally {
+            setLoading(false);
+          }
+        };
+
+        fetchProductos();
+      }, []);
+
+      if (loading) {
+        return (
+          <div className="text-center py-12">
+            <i className="fas fa-spinner fa-spin text-3xl text-red-700"></i>
+          </div>
+        );
+      }
+
+      return (
+        <div className="container mx-auto px-4 py-16 bg-gray-50" id="novedades">
+          <h2 className="text-3xl font-black text-center mb-10 tracking-tight">
+            LO MÁS NUEVO
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {productos.map((producto) => (
+              <div key={producto.id} className="product-card group">
+                <div className="relative overflow-hidden mb-3">
+                  <img 
+                    src={producto.thumbnailUrl} 
+                    alt={producto.title}
+                    className="w-full h-48 object-cover"
+                  />
+                </div>
+                <h3 className="font-semibold text-base mb-2 truncate">{producto.title}</h3>
+                <div className="flex justify-between items-center">
+                  <span className="text-red-700 font-bold text-lg">$49.99</span>
+                  <button className="bg-black text-white px-3 py-1 text-sm hover:bg-red-700 transition-colors">
+                    <i className="fas fa-cart-plus"></i>
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function Footer() {
+      React.useEffect(() => {
+        gsap.fromTo('footer', 
+          { opacity: 0, y: 30 },
+          { 
+            opacity: 1, 
+            y: 0, 
+            duration: 0.6,
+            scrollTrigger: {
+              trigger: 'footer',
+              start: 'top 90%',
+            }
+          }
+        );
+      }, []);
+
+      return (
+        <footer className="bg-white border-t-2 border-black py-12">
+          <div className="container mx-auto px-4 text-center">
+            <a href="Index.html" className="text-3xl font-black text-black tracking-tight logo inline-block mb-6">
+              VÉRT<span className="text-red-700">IGO</span>
+            </a>
+            
+            <p className="text-gray-500 text-sm mb-6">
+              © 2026 VÉRTIGO · SKATE CULTURE
+            </p>
+            
+            <div className="flex justify-center space-x-6 mb-8">
+              <a href="#" className="text-gray-400 hover:text-red-700 transition-colors text-xl">
+                <i className="fab fa-instagram"></i>
+              </a>
+              <a href="#" className="text-gray-400 hover:text-red-700 transition-colors text-xl">
+                <i className="fab fa-facebook"></i>
+              </a>
+              <a href="#" className="text-gray-400 hover:text-red-700 transition-colors text-xl">
+                <i className="fab fa-twitter"></i>
+              </a>
+              <a href="#" className="text-gray-400 hover:text-red-700 transition-colors text-xl">
+                <i className="fab fa-tiktok"></i>
+              </a>
+            </div>
+
+            <div className="text-xs text-gray-400">
+              <a href="HTML/Login.html" className="hover:text-red-700 transition-colors mx-3">LOGIN</a>
+              <span>|</span>
+              <a href="#" className="hover:text-red-700 transition-colors mx-3">CONTACTO</a>
+            </div>
+          </div>
+        </footer>
+      );
+    }
+
+    function App() {
+      const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+
+      const toggleMenu = () => {
+        setIsMenuOpen(!isMenuOpen);
+        if (!isMenuOpen) {
+          document.body.style.overflow = 'hidden';
+        } else {
+          document.body.style.overflow = 'auto';
+        }
+      };
+
+      return (
+        <div className="min-h-screen flex flex-col">
+          <Navbar toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
+          <MenuDesplegable isOpen={isMenuOpen} toggleMenu={toggleMenu} />
+          
+          <main className="flex-grow">
+            <Hero />
+            <Categorias />
+            <ProductosDestacados />
+          </main>
+          
+          <Footer />
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+</body>
+</html>

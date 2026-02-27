@@ -1,0 +1,240 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #ffffff;
+  color: #000000;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, .logo {
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.vertigo-title {
+  font-size: 8rem;
+  font-weight: 900;
+  line-height: 0.9;
+  color: #000000;
+  position: relative;
+  display: inline-block;
+}
+
+.vertigo-title span {
+  color: #8b0000;
+}
+
+.hero-section {
+  opacity: 0;
+  transform: translateY(30px);
+  position: relative;
+  background-color: #ffffff;
+}
+
+.categoria-card {
+  background: #ffffff;
+  border: 2px solid #000000;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+  box-shadow: 8px 8px 0 rgba(139, 0, 0, 0.1);
+}
+
+.categoria-card:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 12px 12px 0 rgba(139, 0, 0, 0.2);
+  border-color: #8b0000;
+}
+
+.menu-hamburguesa {
+  width: 40px;
+  height: 30px;
+  position: relative;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.menu-hamburguesa span {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background: #000000;
+  position: absolute;
+  transition: all 0.3s ease;
+}
+
+.menu-hamburguesa span:first-child { top: 0; }
+.menu-hamburguesa span:nth-child(2) { top: 50%; transform: translateY(-50%); }
+.menu-hamburguesa span:last-child { bottom: 0; }
+
+.menu-hamburguesa.active span:first-child {
+  transform: rotate(45deg);
+  top: 50%;
+  background: #8b0000;
+}
+
+.menu-hamburguesa.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-hamburguesa.active span:last-child {
+  transform: rotate(-45deg);
+  bottom: auto;
+  top: 50%;
+  background: #8b0000;
+}
+
+.menu-desplegable {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 100%;
+  height: 100vh;
+  background: #ffffff;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border-left: 3px solid #8b0000;
+}
+
+.menu-desplegable.active {
+  right: 0;
+}
+
+.menu-desplegable a {
+  color: #000000;
+  font-size: 3rem;
+  font-weight: 800;
+  text-decoration: none;
+  margin: 15px 0;
+  transform: translateX(50px);
+  opacity: 0;
+  transition: all 0.3s ease;
+  letter-spacing: -1px;
+}
+
+.menu-desplegable.active a {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.menu-desplegable a:nth-child(1) { transition-delay: 0.1s; }
+.menu-desplegable a:nth-child(2) { transition-delay: 0.2s; }
+.menu-desplegable a:nth-child(3) { transition-delay: 0.3s; }
+.menu-desplegable a:nth-child(4) { transition-delay: 0.4s; }
+.menu-desplegable a:nth-child(5) { transition-delay: 0.5s; }
+.menu-desplegable a:nth-child(6) { transition-delay: 0.6s; }
+
+.menu-desplegable a:hover {
+  color: #8b0000;
+}
+
+.buscador-container {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+}
+
+.buscador-input {
+  width: 100%;
+  padding: 10px 40px 10px 15px;
+  background: #ffffff;
+  border: 2px solid #000000;
+  color: #000000;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.buscador-input:focus {
+  border-color: #8b0000;
+}
+
+.buscador-input::placeholder {
+  color: #999999;
+}
+
+.buscador-btn {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #8b0000;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.product-card {
+  background: #ffffff;
+  border: 2px solid #000000;
+  padding: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 6px 6px 0 rgba(139, 0, 0, 0.1);
+}
+
+.product-card:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 10px 10px 0 rgba(139, 0, 0, 0.2);
+  border-color: #8b0000;
+}
+
+.btn-primary {
+  background: #000000;
+  color: #ffffff;
+  border: 2px solid #000000;
+  padding: 0.75rem 2rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.btn-primary:hover {
+  background: #8b0000;
+  border-color: #8b0000;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #000000;
+  border: 2px solid #000000;
+  padding: 0.75rem 2rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.btn-secondary:hover {
+  background: #000000;
+  color: #ffffff;
+}
+
+.tag {
+  background: #8b0000;
+  color: #ffffff;
+  padding: 0.25rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.divider {
+  width: 100%;
+  height: 2px;
+  background: #000000;
+  margin: 2rem 0;
+}
